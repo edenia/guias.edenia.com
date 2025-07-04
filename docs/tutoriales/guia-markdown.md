@@ -238,7 +238,7 @@ Otro texto
 
 * * * 
 
-### **Líneas Horizontales**
+## **Líneas-Horizontales** {#Líneas-Horizontales}
 
 ``` markdown title="Sintaxis"
 ---
