@@ -1,51 +1,8 @@
 import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/styles';
-import Stepper from '@material-ui/core/Stepper'
-import Step from '@material-ui/core/Step'
-import StepLabel from '@material-ui/core/StepLabel'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
+import { Stepper, Step, StepLabel, Button, Typography, Box } from '@mui/material'
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-const useStyles = makeStyles(() => ({
-  resetButton:{
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  root: {
-    width: '90%'
-  },
-  buttonContainer: {
-    direction: 'rtl',
-    margin: '0% 4%',
-  },
-  button: {
-    textTransform: 'none',
-    color: '#7f7f7f',
-    '&.MuiButton-containedPrimary': {
-      color: '#fff',
-      backgroundColor: '#3EBBD3',
-      margin: '1%',
-    }
-  },
-  instructions: {
-    margin: '1% 5% 1%',
-  },
-  stepIconRoot: {
-    color: 'rgb(192 192 192)',
-    '&.MuiStepIcon-active': {
-      color: '#3EBBD3'
-    },
-    '&.MuiStepIcon-completed': {
-      color: '#82B982'
-    }
-  }
-}));
-
 const CustomStepper = ({ Content }) => {
-  const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
@@ -61,60 +18,89 @@ const CustomStepper = ({ Content }) => {
   };
 
   return (
-    <div className={classes.root}>
-      <Stepper activeStep={activeStep} alternativeLabel>
+    <Box sx={{ width: '90%' }}>
+      <Stepper 
+        activeStep={activeStep} 
+        alternativeLabel
+        sx={{
+          '& .MuiStepIcon-root': {
+            color: 'rgb(192, 192, 192)',
+            '&.Mui-active': {
+              color: '#3EBBD3'
+            },
+            '&.Mui-completed': {
+              color: '#82B982'
+            }
+          }
+        }}
+      >
         {Content.map((step, index) => (
             <Step key={index}>
-              <StepLabel
-                StepIconProps={{
-                  classes: {
-                    root: classes.stepIconRoot,
-                    active: classes.stepIconActive,
-                    completed: classes.stepIconCompleted
-                  }
-                }}
-              >
+              <StepLabel>
                { step.title && step.title }
               </StepLabel>
             </Step>
           )
         )}
       </Stepper>
-      <div>
+      <Box>
         {activeStep === Content.length ? (
-          <div className={classes.resetButton}>
-            <Button onClick={handleReset} className={classes.button}>
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'row', 
+            justifyContent: 'center', 
+            alignItems: 'center' 
+          }}>
+            <Button 
+              onClick={handleReset} 
+              sx={{ 
+                textTransform: 'none', 
+                color: '#7f7f7f' 
+              }}
+            >
               Reset
             </Button>
-          </div>
+          </Box>
         ) : (
-          <div>
-            <Typography className={classes.instructions}>
+          <Box>
+            <Typography sx={{ margin: '1% 5% 1%' }}>
               {Content[activeStep].instruction}
             </Typography>
-            <div className={classes.instructions}><img src={useBaseUrl(Content[activeStep].imageSrc)} loading="lazy"/></div>
-            <div className={classes.buttonContainer}>
+            <Box sx={{ margin: '1% 5% 1%' }}>
+              <img src={useBaseUrl(Content[activeStep].imageSrc)} loading="lazy"/>
+            </Box>
+            <Box sx={{ direction: 'rtl', margin: '0% 4%' }}>
               <Button
                 variant="contained"
-                color="primary"
                 onClick={handleNext}
                 href={Content[activeStep].href}
-                className={classes.button}
+                sx={{ 
+                  textTransform: 'none', 
+                  color: '#fff',
+                  backgroundColor: '#3EBBD3',
+                  margin: '1%',
+                  '&:hover': {
+                    backgroundColor: '#36a8bd'
+                  }
+                }}
               >
                 {activeStep === Content.length - 1 ? 'Finish' : 'Next'}
               </Button>
               <Button
                 disabled={!activeStep}
                 onClick={handleBack}
-                className={classes.button}
+                sx={{ 
+                  textTransform: 'none', 
+                  color: '#7f7f7f' 
+                }}
               >
                 Back
               </Button>
-            </div>
-          </div>
+            </Box>
+          </Box>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
